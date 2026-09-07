@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: task4-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+
+      containers:
+        - name: backend
+          image: ghcr.io/abdelrahman679/t4-backend:2.0
+          ports:
+            - containerPort: 80
+
+          env:
+            - name: DATABASE_DB
+              value: example
+
+            - name: DATABASE_USER
+              value: root
+
+            - name: DATABASE_PASSWORD
+              value: /etc/app-secrets/db-password
+
+            - name: DATABASE_HOST
+              value: db
+
+          volumeMounts:
+            - name: db-password
+              mountPath: /etc/app-secrets
+              readOnly: true
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "128Mi"
+
+      volumes:
+        - name: db-password
+          secret:
+            secretName: db-password
+            items:
+              - key: password
+                path: db-password
