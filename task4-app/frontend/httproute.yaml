@@ -18,4 +18,4 @@ spec:
           weight: 100
         - name: frontend-canary
           port: 3000
-           weight: 0
+          weight: 0
