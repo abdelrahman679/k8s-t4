@@ -44,3 +44,11 @@ spec:
         plugins:
           argoproj-labs/gatewayAPI:
             httpRoute: frontend 
+    steps:
+      - setWeight: 10
+      - pause: {}
+      - setWeight: 25
+      - pause: {}
+      - setWeight: 50
+      - pause: {}
+      - setWeight: 100
