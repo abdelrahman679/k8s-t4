@@ -45,4 +45,4 @@ spec:
           argoproj-labs/gatewayAPI:
             httpRoute:
               name: frontend
-              namespace: task4-app
+              
