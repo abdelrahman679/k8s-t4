@@ -43,6 +43,4 @@ spec:
       trafficRouting:
         plugins:
           argoproj-labs/gatewayAPI:
-            httpRoute:
-              name: frontend
-              
+            httpRoute: frontend 
