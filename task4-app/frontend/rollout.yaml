@@ -1,13 +1,17 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: frontend
   namespace: task4-app
 spec:
   replicas: 1
+
+  revisionHistoryLimit: 10
+
   selector:
     matchLabels:
       app: frontend
+
   template:
     metadata:
       labels:
@@ -15,15 +19,30 @@ spec:
     spec:
       imagePullSecrets:
         - name: ghcr-secret
+
       containers:
         - name: frontend
           image: ghcr.io/abdelrahman679/t4-frontend:2.0
+
           ports:
             - containerPort: 3000
+
           resources:
             requests:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: 100m
+              memory: 256Mi
             limits:
-              cpu: "500m"
-              memory: "500Mi"
+              cpu: 500m
+              memory: 500Mi
+
+  strategy:
+    canary:
+      stableService: frontend-stable
+      canaryService: frontend-canary
+
+      trafficRouting:
+        plugins:
+          argoproj-labs/gatewayAPI:
+            httpRoute:
+              name: frontend
+              namespace: task4-app
