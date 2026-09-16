@@ -40,6 +40,8 @@ spec:
       stableService: frontend-stable
       canaryService: frontend-canary
 
+      dynamicStableScale: true
+
       trafficRouting:
         plugins:
           argoproj-labs/gatewayAPI:
